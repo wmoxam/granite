@@ -8,7 +8,7 @@ describe "#casting_to_fields" do
 
   it "casts string to date" do
     model = Student.new({"birthdate" => "1979-12-09"})
-    model.birthday.should eq Granite::Date.new(1979_u16, 12_u8, 9_u8)
+    model.birthday.should eq Granite::Date.new(1979, 12, 9)
   end
 
   it "casts time with timezone" do

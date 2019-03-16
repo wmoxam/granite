@@ -11,7 +11,10 @@ struct Granite::Date
     @year = 1970
   end
 
-  def initialize(@year, @month, @day)
+  def initialize(year, month, day)
+    @year = year.to_u16
+    @month = month.to_u8
+    @day = day.to_u8
   end
 
   def initialize(date)
