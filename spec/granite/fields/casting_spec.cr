@@ -6,6 +6,11 @@ describe "#casting_to_fields" do
     model.downvotes.should eq 32
   end
 
+  it "casts string to date" do
+    model = Student.new({"birthdate" => "1979-12-09"})
+    model.birthday.should eq Granite::Date.new(1979_u16, 12_u8, 9_u8)
+  end
+
   it "casts time with timezone" do
     Granite.settings.default_timezone = "Asia/Shanghai"
     created_at = Time.parse("2018-12-12 00:00:00 +00:00", "%F %T %:z", Time::Location::UTC)

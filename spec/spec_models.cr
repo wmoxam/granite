@@ -39,6 +39,7 @@ require "uuid"
     table_name students
 
     field name : String
+    field birthday : Granite::Date
 
     has_many :enrollments, class_name: Enrollment
     has_many :klasses, class_name: Klass, through: :enrollments

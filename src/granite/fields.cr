@@ -2,7 +2,7 @@ require "json"
 
 module Granite::Fields
   alias SupportedArrayTypes = Array(String) | Array(Int16) | Array(Int32) | Array(Int64) | Array(Float32) | Array(Float64) | Array(Bool)
-  alias Type = DB::Any | SupportedArrayTypes
+  alias Type = DB::Any | SupportedArrayTypes | Granite::Date
   TIME_FORMAT_REGEX = /\d{4,}-\d{2,}-\d{2,}\s\d{2,}:\d{2,}:\d{2,}/
 
   macro included
@@ -159,6 +159,12 @@ module Granite::Fields
               @{{_name.id}} = value.is_a?(String) ? value.to_f64(strict: false) : value.as(Float64)
             {% elsif type.id == Bool.id %}
               @{{_name.id}} = ["1", "yes", "true", true, 1].includes?(value)
+            {% elsif type.id == Granite::Date.id %}
+              if value.is_a?(Granite::Date)
+                @{{_name.id}} = value
+              elsif value.to_s =~ Granite::Date::FORMAT_REGEX
+                @{{_name.id}} = Granite::Date.new(value)
+              end
             {% elsif type.id == Time.id %}
               if value.is_a?(Time)
                 @{{_name.id}} = value.in(Granite.settings.default_timezone)
